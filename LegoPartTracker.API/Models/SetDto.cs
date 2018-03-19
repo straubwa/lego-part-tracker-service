@@ -7,10 +7,18 @@ namespace LegoPartTracker.API.Models
 {
     public class SetDto
     {
-        public string Set_num { get; set; }
+        public string SetNumber { get; set; }
         public string Name { get; set; }
-        public int Theme_id { get; set; }
+        public int ThemeId { get; set; }
         public string Theme { get; set; }
-        public string Set_img_url { get; set; }
+        public string SetImageUrl { get; set; }
+
+        public int NumberOfParts {  get
+            {
+                return Parts.Count;
+            }
+        }
+
+        public ICollection<PartDto> Parts { get; set; } = new List<PartDto>();
     }
 }
