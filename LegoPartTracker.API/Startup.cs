@@ -30,6 +30,8 @@ namespace LegoPartFinder.API
                 app.UseExceptionHandler();
             }
 
+            app.UseStatusCodePages();
+
             app.UseMvc();
         }
     }
