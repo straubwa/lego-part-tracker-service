@@ -10,17 +10,19 @@ namespace LegoPartTracker.API.Controllers
     public class SetsController: Controller
     {
         [HttpGet()]
-        public JsonResult GetSets()
+        public IActionResult GetSets()
         {
-            return new JsonResult(SetsDataStore.Current.Sets);
+            return Ok(SetsDataStore.Current.Sets);
         }
 
         [HttpGet("{set_num}")]
-        public JsonResult GetSet(string set_num)
+        public IActionResult GetSet(string set_num)
         {
-            return new JsonResult(
-                SetsDataStore.Current.Sets.FirstOrDefault(s => s.Set_num == set_num)
-                );
+            var setToReturn = SetsDataStore.Current.Sets.FirstOrDefault(s => s.Set_num == set_num);
+            if (setToReturn == null)
+                return NotFound();
+
+            return Ok(setToReturn);
         }
     }
 }
