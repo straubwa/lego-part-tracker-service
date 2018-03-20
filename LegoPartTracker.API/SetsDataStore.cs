@@ -56,7 +56,7 @@ namespace LegoPartTracker.API
                             PartUrl = "https://rebrickable.com/parts/11090/bar-holder-with-clip/",
                             PartImageUrl = "https://m.rebrickable.com/media/parts/elements/6015891.jpg",
                             Color = "Black",
-                            Quantity = 3,
+                            QuantityNeeded = 3,
                             ElementId = "6015891"
                         },
                         new PartDto()
@@ -67,7 +67,7 @@ namespace LegoPartTracker.API
                             PartUrl = "https://rebrickable.com/parts/43093/technic-axle-pin-with-friction-ridges-lengthwise/",
                             PartImageUrl = "https://m.rebrickable.com/media/parts/elements/4184170.jpg",
                             Color = "Blue",
-                            Quantity = 6,
+                            QuantityNeeded = 6,
                             ElementId = "4206482"
                         },
                         new PartDto()
@@ -78,7 +78,7 @@ namespace LegoPartTracker.API
                             PartUrl = "https://rebrickable.com/parts/6141/plate-round-1-x-1-with-solid-stud/",
                             PartImageUrl = "https://m.rebrickable.com/media/parts/elements/614126.jpg",
                             Color = "Flat Silver",
-                            Quantity = 4,
+                            QuantityNeeded = 4,
                             ElementId = "4633691"
                         },
                         new PartDto()
@@ -89,7 +89,7 @@ namespace LegoPartTracker.API
                             PartUrl = "https://rebrickable.com/parts/92947/brick-round-2-x-2-grill/",
                             PartImageUrl = "https://m.rebrickable.com/media/parts/elements/6024730.jpg",
                             Color = "Light Bluish Gray",
-                            Quantity = 1,
+                            QuantityNeeded = 1,
                             ElementId = "4650645"
                         }
                     }

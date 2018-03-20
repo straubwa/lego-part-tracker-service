@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LegoPartTracker.API.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace LegoPartTracker.API.Controllers
             return Ok(SetsDataStore.Current.Sets);
         }
 
-        [HttpGet("{setNumber}")]
+        [HttpGet("{setNumber}", Name = "GetSet")]
         public IActionResult GetSet(string setNumber)
         {
             var setToReturn = SetsDataStore.Current.Sets.FirstOrDefault(s => s.SetNumber == setNumber);
@@ -23,6 +24,20 @@ namespace LegoPartTracker.API.Controllers
                 return NotFound();
 
             return Ok(setToReturn);
+        }
+
+        [HttpPost()]
+        public IActionResult CreateSet([FromBody] SetDto set)
+        {
+            if(set == null)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            SetsDataStore.Current.Sets.Add(set);
+
+            return CreatedAtRoute("GetSet", new { setNumber = set.SetNumber }, set);
         }
 
         [HttpGet("{setNumber}/Parts")]
