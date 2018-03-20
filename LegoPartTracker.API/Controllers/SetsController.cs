@@ -1,6 +1,7 @@
 ﻿using LegoPartTracker.API.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,13 @@ namespace LegoPartTracker.API.Controllers
     [Route("api/sets")]
     public class SetsController: Controller
     {
+        private ILogger<SetsController> _logger;
+
+        public SetsController(ILogger<SetsController> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpGet()]
         public IActionResult GetSets()
         {
@@ -22,7 +30,10 @@ namespace LegoPartTracker.API.Controllers
         {
             var setToReturn = SetsDataStore.Current.Sets.FirstOrDefault(s => s.SetNumber == setNumber);
             if (setToReturn == null)
+            {
+                _logger.LogInformation($"Set Number {setNumber} not found");
                 return NotFound();
+            }
 
             return Ok(setToReturn);
         }
@@ -47,7 +58,10 @@ namespace LegoPartTracker.API.Controllers
         {
             var setToReturn = SetsDataStore.Current.Sets.FirstOrDefault(s => s.SetNumber == setNumber);
             if (setToReturn == null)
+            {
+                _logger.LogInformation($"Set Number {setNumber} not found");
                 return NotFound();
+            }
 
             return Ok(setToReturn.Parts);
         }
@@ -57,7 +71,10 @@ namespace LegoPartTracker.API.Controllers
         {
             var setToReturn = SetsDataStore.Current.Sets.FirstOrDefault(s => s.SetNumber == setNumber);
             if (setToReturn == null)
+            {
+                _logger.LogInformation($"Set Number {setNumber} not found");
                 return NotFound();
+            }
 
             var partToReturn = setToReturn.Parts.FirstOrDefault(p => p.Id == id);
             if (partToReturn == null)
@@ -75,7 +92,10 @@ namespace LegoPartTracker.API.Controllers
 
             var setToReturn = SetsDataStore.Current.Sets.FirstOrDefault(s => s.SetNumber == setNumber);
             if (setToReturn == null)
+            {
+                _logger.LogInformation($"Set Number {setNumber} not found");
                 return NotFound();
+            }
 
             var partToUpdate = setToReturn.Parts.FirstOrDefault(p => p.Id == id);
             if (partToUpdate == null)
