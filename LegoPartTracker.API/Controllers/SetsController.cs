@@ -1,4 +1,5 @@
 ﻿using LegoPartTracker.API.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,7 @@ namespace LegoPartTracker.API.Controllers
             return CreatedAtRoute("GetSet", new { setNumber = set.SetNumber }, set);
         }
 
+
         [HttpGet("{setNumber}/Parts")]
         public IActionResult GetSetParts(string setNumber)
         {
@@ -62,6 +64,31 @@ namespace LegoPartTracker.API.Controllers
                 return NotFound();
 
             return Ok(partToReturn);
+        }
+
+
+        [HttpPatch("{setNumber}/Parts/{id}")]
+        public IActionResult PartiallyUpdateSetPart(string setNumber, int id, [FromBody] JsonPatchDocument<PartDto> patchDocument)
+        {
+            if (patchDocument == null)
+                return BadRequest();
+
+            var setToReturn = SetsDataStore.Current.Sets.FirstOrDefault(s => s.SetNumber == setNumber);
+            if (setToReturn == null)
+                return NotFound();
+
+            var partToUpdate = setToReturn.Parts.FirstOrDefault(p => p.Id == id);
+            if (partToUpdate == null)
+                return NotFound();
+
+            patchDocument.ApplyTo(partToUpdate, ModelState);
+
+            TryValidateModel(partToUpdate);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return NoContent();
         }
     }
 }

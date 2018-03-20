@@ -28,6 +28,7 @@ namespace LegoPartTracker.API.Models
         [Range(0,int.MaxValue)]
         public int QuantityNeeded { get; set; }
 
+        [Range(0, int.MaxValue)]
         public int QuantityFound { get; set; }
 
         public string ElementId { get; set; }
