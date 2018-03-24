@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LegoPartTracker.API.Entities;
+using LegoPartTracker.API.Models;
 using LegoPartTracker.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -51,6 +52,13 @@ namespace LegoPartFinder.API
             }
 
             app.UseStatusCodePages();
+
+            AutoMapper.Mapper.Initialize(config =>
+            {
+                config.CreateMap<Set, SetWithoutPartDto>();
+                config.CreateMap<Set, SetDto>();
+                config.CreateMap<SetPart, PartDto>();
+            });
 
             app.UseMvc();
         }

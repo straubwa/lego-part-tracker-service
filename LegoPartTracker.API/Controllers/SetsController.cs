@@ -1,4 +1,6 @@
-﻿using LegoPartTracker.API.Models;
+﻿using AutoMapper;
+using LegoPartTracker.API.Models;
+using LegoPartTracker.API.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,28 +15,34 @@ namespace LegoPartTracker.API.Controllers
     public class SetsController: Controller
     {
         private ILogger<SetsController> _logger;
+        private ISetInfoRepository _setInfoRepository;
 
-        public SetsController(ILogger<SetsController> logger)
+        public SetsController(ILogger<SetsController> logger, ISetInfoRepository setInfoRepository)
         {
             _logger = logger;
+            _setInfoRepository = setInfoRepository;
         }
 
         [HttpGet()]
         public IActionResult GetSets()
         {
-            return Ok(SetsDataStore.Current.Sets);
+            var setEntities = _setInfoRepository.GetSets();
+
+            var results = Mapper.Map<IEnumerable<SetWithoutPartDto>>(setEntities);
+            return Ok(results);
         }
 
         [HttpGet("{setNumber}", Name = "GetSet")]
         public IActionResult GetSet(string setNumber)
         {
-            var setToReturn = SetsDataStore.Current.Sets.FirstOrDefault(s => s.SetNumber == setNumber);
+            var setToReturn = _setInfoRepository.GetSet(setNumber);
             if (setToReturn == null)
             {
                 _logger.LogInformation($"Set Number {setNumber} not found");
                 return NotFound();
             }
 
+            var results = Mapper.Map<SetWithoutPartDto>(setToReturn);
             return Ok(setToReturn);
         }
 
@@ -56,31 +64,36 @@ namespace LegoPartTracker.API.Controllers
         [HttpGet("{setNumber}/Parts")]
         public IActionResult GetSetParts(string setNumber)
         {
-            var setToReturn = SetsDataStore.Current.Sets.FirstOrDefault(s => s.SetNumber == setNumber);
-            if (setToReturn == null)
+            if (!_setInfoRepository.SetExists(setNumber))
             {
                 _logger.LogInformation($"Set Number {setNumber} not found");
                 return NotFound();
             }
 
-            return Ok(setToReturn.Parts);
+            var setPartsToReturn = _setInfoRepository.GetSetParts(setNumber);
+
+            var results = Mapper.Map<IEnumerable<PartDto>>(setPartsToReturn);
+            return Ok(results);
         }
 
         [HttpGet("{setNumber}/Parts/{id}")]
         public IActionResult GetSetPart(string setNumber, int id)
         {
-            var setToReturn = SetsDataStore.Current.Sets.FirstOrDefault(s => s.SetNumber == setNumber);
-            if (setToReturn == null)
+            if (!_setInfoRepository.SetExists(setNumber))
             {
                 _logger.LogInformation($"Set Number {setNumber} not found");
                 return NotFound();
             }
 
-            var partToReturn = setToReturn.Parts.FirstOrDefault(p => p.Id == id);
-            if (partToReturn == null)
+            var setPartToReturn = _setInfoRepository.GetSetPart(setNumber, id);
+            if (setPartToReturn == null)
+            {
+                _logger.LogInformation($"Set Number {setNumber} Part {id} not found");
                 return NotFound();
+            }
 
-            return Ok(partToReturn);
+            var results = Mapper.Map<PartDto>(setPartToReturn);
+            return Ok(results);
         }
 
 

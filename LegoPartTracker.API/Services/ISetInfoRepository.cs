@@ -8,6 +8,8 @@ namespace LegoPartTracker.API.Services
 {
     public interface ISetInfoRepository
     {
+        bool SetExists(string setNumber);
+
         IQueryable<Set> GetSets();
 
         Set GetSet(string setNumber);
