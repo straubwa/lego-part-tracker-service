@@ -9,13 +9,13 @@ namespace LegoPartTracker.API
     public class SetsDataStore
     {
         public static SetsDataStore Current { get; } = new SetsDataStore();
-        public List<SetDto> Sets { get; set; }
+        public List<SetWithSetPartDto> Sets { get; set; }
         public SetsDataStore()
         {
             //initialize example data
-            Sets = new List<SetDto>()
+            Sets = new List<SetWithSetPartDto>()
             {
-                new SetDto()
+                new SetWithSetPartDto()
                 {
                     SetNumber = "70612-1",
                     Name = "Green Ninja Mech Dragon",
@@ -23,7 +23,7 @@ namespace LegoPartTracker.API
                     Theme = "Ninjago > Ninjago The Movie",
                     SetImageUrl = "https://m.rebrickable.com/media/sets/70612-1.jpg"
                 },
-                new SetDto()
+                new SetWithSetPartDto()
                 {
                     SetNumber = "70614-1",
                     Name = "Lightning Jet",
@@ -31,7 +31,7 @@ namespace LegoPartTracker.API
                     Theme = "Ninjago > Ninjago The Movie",
                     SetImageUrl = "https://m.rebrickable.com/media/sets/70614-1.jpg"
                 },
-                new SetDto()
+                new SetWithSetPartDto()
                 {
                     SetNumber = "70608-1",
                     Name = "Master Falls",
@@ -39,16 +39,16 @@ namespace LegoPartTracker.API
                     Theme = "Ninjago > Ninjago The Movie",
                     SetImageUrl = "https://m.rebrickable.com/media/sets/70608-1.jpg"
                 },
-                new SetDto()
+                new SetWithSetPartDto()
                 {
                     SetNumber = "70611-1",
                     Name = "Water Strider",
                     ThemeId = 616,
                     Theme = "Ninjago > Ninjago The Movie",
                     SetImageUrl = "https://m.rebrickable.com/media/sets/70611-1.jpg",
-                    Parts = new List<PartDto>()
+                    Parts = new List<SetPartDto>()
                     {
-                        new PartDto()
+                        new SetPartDto()
                         {
                             Id =1244846,
                             PartNumber = "11090",
@@ -59,7 +59,7 @@ namespace LegoPartTracker.API
                             QuantityNeeded = 3,
                             ElementId = "6015891"
                         },
-                        new PartDto()
+                        new SetPartDto()
                         {
                             Id =1244817,
                             PartNumber = "43093",
@@ -70,7 +70,7 @@ namespace LegoPartTracker.API
                             QuantityNeeded = 6,
                             ElementId = "4206482"
                         },
-                        new PartDto()
+                        new SetPartDto()
                         {
                             Id =1244841,
                             PartNumber = "6141",
@@ -81,7 +81,7 @@ namespace LegoPartTracker.API
                             QuantityNeeded = 4,
                             ElementId = "4633691"
                         },
-                        new PartDto()
+                        new SetPartDto()
                         {
                             Id =1244855,
                             PartNumber = "92947",
@@ -94,7 +94,7 @@ namespace LegoPartTracker.API
                         }
                     }
                 },
-                new SetDto()
+                new SetWithSetPartDto()
                 {
                     SetNumber = "70656-1",
                     Name = "garmadon, Garmadon, GARMADON!",

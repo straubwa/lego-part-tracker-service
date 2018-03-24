@@ -6,29 +6,22 @@ using System.Threading.Tasks;
 
 namespace LegoPartTracker.API.Models
 {
-    public class PartDto
+    public class SetPartDto
     {
-        [Required]
         public int Id { get; set; }
 
-        [Required]
         public string PartNumber { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
         public string PartUrl { get; set; }
 
-        [Required]
         public string PartImageUrl { get; set; }
 
-        [Required]
         public string Color { get; set; }
 
-        [Range(0,int.MaxValue)]
         public int QuantityNeeded { get; set; }
 
-        [Range(0, int.MaxValue)]
         public int QuantityFound { get; set; }
 
         public string ElementId { get; set; }

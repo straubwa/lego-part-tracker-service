@@ -28,7 +28,7 @@ namespace LegoPartTracker.API.Controllers
         {
             var setEntities = _setInfoRepository.GetSets();
 
-            var results = Mapper.Map<IEnumerable<SetWithoutPartDto>>(setEntities);
+            var results = Mapper.Map<IEnumerable<SetDto>>(setEntities);
             return Ok(results);
         }
 
@@ -42,12 +42,12 @@ namespace LegoPartTracker.API.Controllers
                 return NotFound();
             }
 
-            var results = Mapper.Map<SetWithoutPartDto>(setToReturn);
+            var results = Mapper.Map<SetDto>(setToReturn);
             return Ok(setToReturn);
         }
 
         [HttpPost()]
-        public IActionResult CreateSet([FromBody] SetDto set)
+        public IActionResult CreateSet([FromBody] SetWithSetPartDto set)
         {
             if(set == null)
                 return BadRequest();
@@ -72,7 +72,7 @@ namespace LegoPartTracker.API.Controllers
 
             var setPartsToReturn = _setInfoRepository.GetSetParts(setNumber);
 
-            var results = Mapper.Map<IEnumerable<PartDto>>(setPartsToReturn);
+            var results = Mapper.Map<IEnumerable<SetPartDto>>(setPartsToReturn);
             return Ok(results);
         }
 
@@ -92,13 +92,13 @@ namespace LegoPartTracker.API.Controllers
                 return NotFound();
             }
 
-            var results = Mapper.Map<PartDto>(setPartToReturn);
+            var results = Mapper.Map<SetPartDto>(setPartToReturn);
             return Ok(results);
         }
 
 
         [HttpPatch("{setNumber}/Parts/{id}")]
-        public IActionResult PartiallyUpdateSetPart(string setNumber, int id, [FromBody] JsonPatchDocument<PartDto> patchDocument)
+        public IActionResult PartiallyUpdateSetPart(string setNumber, int id, [FromBody] JsonPatchDocument<SetPartDto> patchDocument)
         {
             if (patchDocument == null)
                 return BadRequest();

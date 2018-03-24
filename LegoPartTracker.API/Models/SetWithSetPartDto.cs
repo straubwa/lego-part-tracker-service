@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LegoPartTracker.API.Models
 {
-    public class SetWithoutPartDto
+    public class SetWithSetPartDto
     {
         public string SetNumber { get; set; }
 
@@ -17,5 +17,13 @@ namespace LegoPartTracker.API.Models
         public string Theme { get; set; }
 
         public string SetImageUrl { get; set; }
+
+        public int NumberOfParts {  get
+            {
+                return Parts.Count;
+            }
+        }
+
+        public ICollection<SetPartDto> Parts { get; set; } = new List<SetPartDto>();
     }
 }

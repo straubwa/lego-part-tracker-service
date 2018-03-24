@@ -55,9 +55,9 @@ namespace LegoPartFinder.API
 
             AutoMapper.Mapper.Initialize(config =>
             {
-                config.CreateMap<Set, SetWithoutPartDto>();
                 config.CreateMap<Set, SetDto>();
-                config.CreateMap<SetPart, PartDto>();
+                config.CreateMap<Set, SetWithSetPartDto>();
+                config.CreateMap<SetPart, SetPartDto>();
             });
 
             app.UseMvc();
