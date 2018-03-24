@@ -23,6 +23,7 @@ namespace LegoPartTracker.API.Controllers
             _setInfoRepository = setInfoRepository;
         }
 
+
         [HttpGet()]
         public IActionResult GetSets()
         {
@@ -31,6 +32,7 @@ namespace LegoPartTracker.API.Controllers
             var results = Mapper.Map<IEnumerable<SetDto>>(setEntities);
             return Ok(results);
         }
+
 
         [HttpGet("{setNumber}", Name = "GetSet")]
         public IActionResult GetSet(string setNumber)
@@ -45,21 +47,7 @@ namespace LegoPartTracker.API.Controllers
             var results = Mapper.Map<SetDto>(setToReturn);
             return Ok(setToReturn);
         }
-
-        [HttpPost()]
-        public IActionResult CreateSet([FromBody] SetWithSetPartDto set)
-        {
-            if(set == null)
-                return BadRequest();
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            SetsDataStore.Current.Sets.Add(set);
-
-            return CreatedAtRoute("GetSet", new { setNumber = set.SetNumber }, set);
-        }
-
+        
 
         [HttpGet("{setNumber}/Parts")]
         public IActionResult GetSetParts(string setNumber)
@@ -75,6 +63,7 @@ namespace LegoPartTracker.API.Controllers
             var results = Mapper.Map<IEnumerable<SetPartDto>>(setPartsToReturn);
             return Ok(results);
         }
+
 
         [HttpGet("{setNumber}/Parts/{id}")]
         public IActionResult GetSetPart(string setNumber, int id)
