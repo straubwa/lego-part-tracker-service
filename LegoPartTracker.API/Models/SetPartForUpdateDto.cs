@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LegoPartTracker.API.Models
 {
-    public class SetPartForQuantityUpdateDto
+    public class SetPartForUpdateDto
     {
         [Range(0, int.MaxValue)]
         public int QuantityFound { get; set; }

@@ -17,5 +17,7 @@ namespace LegoPartTracker.API.Services
         IQueryable<SetPart> GetSetParts(string setNumber);
 
         SetPart GetSetPart(string setNumber, int partId);
+
+        bool Save();
     }
 }

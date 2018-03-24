@@ -39,5 +39,10 @@ namespace LegoPartTracker.API.Services
         {
             return _context.Sets.OrderBy(s => s.SetNumber);
         }
+
+        public bool Save()
+        {
+            return (_context.SaveChanges() >= 0);
+        }
     }
 }

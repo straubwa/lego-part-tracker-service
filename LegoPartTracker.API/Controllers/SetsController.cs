@@ -87,29 +87,43 @@ namespace LegoPartTracker.API.Controllers
 
 
         [HttpPatch("{setNumber}/Parts/{id}")]
-        public IActionResult PartiallyUpdateSetPart(string setNumber, int id, [FromBody] JsonPatchDocument<SetPartDto> patchDocument)
+        public IActionResult UpdateSetPart(string setNumber, int id, [FromBody] JsonPatchDocument<SetPartForUpdateDto> patchDocument)
         {
             if (patchDocument == null)
                 return BadRequest();
 
-            var setToReturn = SetsDataStore.Current.Sets.FirstOrDefault(s => s.SetNumber == setNumber);
-            if (setToReturn == null)
+            if (!_setInfoRepository.SetExists(setNumber))
             {
                 _logger.LogInformation($"Set Number {setNumber} not found");
                 return NotFound();
             }
 
-            var partToUpdate = setToReturn.Parts.FirstOrDefault(p => p.Id == id);
-            if (partToUpdate == null)
+            var setPartToReturn = _setInfoRepository.GetSetPart(setNumber, id);
+            if (setPartToReturn == null)
+            {
+                _logger.LogInformation($"Set Number {setNumber} Part {id} not found");
                 return NotFound();
+            }
 
-            patchDocument.ApplyTo(partToUpdate, ModelState);
+            var setPartToPatch = Mapper.Map<SetPartForUpdateDto>(setPartToReturn);
 
-            TryValidateModel(partToUpdate);
+            patchDocument.ApplyTo(setPartToPatch, ModelState);
+
+            TryValidateModel(setPartToPatch);
 
             if (!ModelState.IsValid)
+            {
+                _logger.LogWarning($"Set Number {setNumber} Part {id} patch was incorrectly formatted");
                 return BadRequest(ModelState);
+            }
 
+            Mapper.Map(setPartToPatch, setPartToReturn);
+
+            if(!_setInfoRepository.Save())
+            {
+                _logger.LogError($"Set Number {setNumber} Part {id} patch error when saving");
+                return StatusCode(500, "A problem happened while handling your request");
+            }
             return NoContent();
         }
     }

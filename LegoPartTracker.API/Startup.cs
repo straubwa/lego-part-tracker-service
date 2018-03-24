@@ -58,6 +58,8 @@ namespace LegoPartFinder.API
                 config.CreateMap<Set, SetDto>();
                 config.CreateMap<Set, SetWithSetPartDto>();
                 config.CreateMap<SetPart, SetPartDto>();
+                config.CreateMap<SetPart, SetPartForUpdateDto>();
+                config.CreateMap<SetPartForUpdateDto, SetPart>();
             });
 
             app.UseMvc();
