@@ -33,6 +33,8 @@ namespace LegoPartFinder.API
             var connectionString = Startup.Configuration["connectionStrings:legoPartFinderConnectionString"];
             services.AddDbContext<SetInfoContext>(o => o.UseSqlServer(connectionString));
 
+            services.AddSingleton<IConfiguration>(Configuration);
+
             services.AddScoped<ISetInfoRepository, SetInfoRepository>();
         }
 
