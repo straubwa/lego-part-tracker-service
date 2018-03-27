@@ -21,7 +21,6 @@ namespace LegoPartTracker.API.Controllers
             _logger = logger;
             _setInfoRepository = setInfoRepository;
             _rebrickableInfoRepository = rebrickableInfoRepository;
-
         }
 
         [HttpGet("Sets/{setNumber}")]
@@ -56,5 +55,73 @@ namespace LegoPartTracker.API.Controllers
             return Ok(partCategories);
         }
         
+        [HttpPost("Sets/{setNumber}/ImportSet")]
+        public IActionResult ImportRebrickableSet(string setNumber)
+        {
+            //get set from rebrickable
+            //confirm that it does not exist in our database
+            //create new set in our db (mapping)
+            //include all parts
+
+            if (_setInfoRepository.SetExists(setNumber))
+                return BadRequest($"setNumber {setNumber} already exists");
+
+            var sourceSet = _rebrickableInfoRepository.GetSet(setNumber);
+
+            if (sourceSet == null)
+                return NotFound();
+
+            var s = new Entities.Set()
+            {
+                SetNumber = sourceSet.SetNumber,
+                Name = sourceSet.Name,
+                ThemeId = sourceSet.ThemeId,
+                Theme = CreateThemePath(sourceSet.ThemeId),
+                SetImageUrl = sourceSet.SetImageUrl.AbsoluteUri
+            };
+
+            var sourceSetParts = _rebrickableInfoRepository.GetSetParts(setNumber);
+
+            foreach(var sourceSetPart in sourceSetParts)
+            {
+                var sp = new Entities.SetPart()
+                {
+                    Id = sourceSetPart.Id,
+                    PartNumber = sourceSetPart.Part.PartNum,
+                    Name = sourceSetPart.Part.Name,
+                    PartUrl = sourceSetPart.Part.PartUrl,
+                    PartImageUrl = sourceSetPart.Part.PartImgUrl,
+                    Color = sourceSetPart.Color.Name,
+                    QuantityNeeded = sourceSetPart.Quantity,
+                    ElementId = sourceSetPart.ElementId
+                };
+
+                s.Parts.Add(sp);
+            }
+
+            _setInfoRepository.AddSet(s);
+            _setInfoRepository.Save();
+
+            return NoContent();
+        }
+
+        private string CreateThemePath(int themeId)
+        {
+            var themes = _rebrickableInfoRepository.GetAllThemes();
+
+            var theme = themes.Where(t => t.Id == themeId).FirstOrDefault();
+
+            string themePath = theme.Name;
+            int i = 1;
+
+            while(theme.ParentId.HasValue && i<10)
+            {
+                theme = themes.Where(t => t.Id == theme.ParentId).FirstOrDefault();
+                themePath = theme.Name + " > " + themePath;
+                i++;
+            }
+
+            return themePath;
+        }
     }
 }
