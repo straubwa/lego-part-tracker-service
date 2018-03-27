@@ -18,6 +18,10 @@ namespace LegoPartTracker.API.Services
 
         SetPart GetSetPart(string setNumber, int partId);
 
+        void AddSet(Set set);
+
+        void RemoveSet(string setNumber);
+
         bool Save();
     }
 }

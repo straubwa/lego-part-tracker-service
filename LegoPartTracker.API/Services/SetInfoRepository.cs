@@ -40,6 +40,18 @@ namespace LegoPartTracker.API.Services
             return _context.Sets.OrderBy(s => s.SetNumber);
         }
 
+        public void AddSet(Set set)
+        {
+            _context.Sets.Add(set);
+        }
+
+        public void RemoveSet(string setNumber)
+        {
+            //TODO: this is not performant, tweak at some point
+            var s = GetSet(setNumber);
+            _context.Sets.Remove(s);
+        }
+
         public bool Save()
         {
             return (_context.SaveChanges() >= 0);
