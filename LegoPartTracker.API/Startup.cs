@@ -36,6 +36,7 @@ namespace LegoPartFinder.API
             services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddScoped<ISetInfoRepository, SetInfoRepository>();
+            services.AddScoped<IRebrickableInfoRepository, RebrickableInfoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
