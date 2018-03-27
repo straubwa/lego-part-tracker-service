@@ -31,17 +31,25 @@ namespace LegoPartTracker.API.Controllers
         }
 
         [HttpGet("{setNumber}/Parts")]
-        public void GetRebrickableSetParts(string setNumber)
+        public IActionResult GetRebrickableSetParts(string setNumber)
         {
             RestRequest request = new RestRequest($"lego/sets/{ setNumber }/parts", Method.GET);
-            var response = _rebrickableClient.Execute<Entities.Rebrickable.SetPartResponse>(request);
-            var setPartsResponse = response.Data;
+            List<Entities.Rebrickable.SetPart> setParts = GetAllSetPartsFromRebrickable(ref request);
+
+            return Ok(setParts);
         }
 
         [HttpGet("Themes")]
         public IActionResult GetThemes()
         {
             RestRequest request = new RestRequest($"lego/themes", Method.GET);
+            List<Entities.Rebrickable.Theme> themes = GetAllThemesFromRebrickable(ref request);
+
+            return Ok(themes);
+        }
+
+        private List<Entities.Rebrickable.Theme> GetAllThemesFromRebrickable(ref RestRequest request)
+        {
             var response = _rebrickableClient.Execute<Entities.Rebrickable.ThemeResponse>(request);
             var responseData = response.Data;
 
@@ -49,16 +57,37 @@ namespace LegoPartTracker.API.Controllers
             themes.AddRange(response.Data.Themes);
 
             bool getMore = (response.Data.Next != null);
-            
-            while(getMore)
+
+            while (getMore)
             {
                 request = new RestRequest(response.Data.Next.AbsoluteUri, Method.GET);
-                response = _rebrickableClient.Execute<Entities.Rebrickable.ThemeResponse>(request); 
+                response = _rebrickableClient.Execute<Entities.Rebrickable.ThemeResponse>(request);
                 themes.AddRange(response.Data.Themes);
                 getMore = (response.Data.Next != null);
             }
 
-            return Ok(themes);
+            return themes;
+        }
+
+        private List<Entities.Rebrickable.SetPart> GetAllSetPartsFromRebrickable(ref RestRequest request)
+        {
+            var response = _rebrickableClient.Execute<Entities.Rebrickable.SetPartResponse>(request);
+            var responseData = response.Data;
+
+            List<Entities.Rebrickable.SetPart> setParts = new List<Entities.Rebrickable.SetPart>();
+            setParts.AddRange(response.Data.SetParts);
+
+            bool getMore = (response.Data.Next != null);
+
+            while (getMore)
+            {
+                request = new RestRequest(response.Data.Next.AbsoluteUri, Method.GET);
+                response = _rebrickableClient.Execute<Entities.Rebrickable.SetPartResponse>(request);
+                setParts.AddRange(response.Data.SetParts);
+                getMore = (response.Data.Next != null);
+            }
+
+            return setParts;
         }
     }
 }
