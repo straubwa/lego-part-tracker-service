@@ -86,6 +86,21 @@ namespace LegoPartTracker.API.Controllers
         }
 
 
+        [HttpDelete("{setNumber}")]
+        public IActionResult DeleteSet(string setNumber)
+        {
+            if (!_setInfoRepository.SetExists(setNumber))
+            {
+                _logger.LogInformation($"Set Number {setNumber} not found to delete");
+                return NotFound();
+            }
+
+            _setInfoRepository.RemoveSet(setNumber);
+            _setInfoRepository.Save();
+            return NoContent();
+        }
+
+
         [HttpPatch("{setNumber}/Parts/{id}")]
         public IActionResult UpdateSetPart(string setNumber, int id, [FromBody] JsonPatchDocument<SetPartForUpdateDto> patchDocument)
         {
