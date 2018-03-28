@@ -37,6 +37,16 @@ namespace LegoPartTracker.API.Services
         }
 
 
+        public Entities.Rebrickable.Theme GetTheme(int id)
+        {
+            RestRequest request = new RestRequest($"lego/themes/{ id }", Method.GET);
+            var response = _rebrickableClient.Execute<Entities.Rebrickable.Theme>(request);
+            var theme = response.Data;
+
+            return theme;
+        }
+
+
         public List<Entities.Rebrickable.Theme> GetAllThemes()
         {
             RestRequest request = new RestRequest($"lego/themes", Method.GET);
