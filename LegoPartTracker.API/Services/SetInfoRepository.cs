@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LegoPartTracker.API.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace LegoPartTracker.API.Services
 {
@@ -47,9 +48,8 @@ namespace LegoPartTracker.API.Services
 
         public void RemoveSet(string setNumber)
         {
-            //TODO: this is not performant, tweak at some point
-            var s = GetSet(setNumber);
-            _context.Sets.Remove(s);
+            _context.Database.ExecuteSqlCommand($"delete Parts where SetNumber = { setNumber }");
+            _context.Database.ExecuteSqlCommand($"delete Sets where SetNumber = { setNumber }");
         }
 
         public bool Save()
