@@ -47,6 +47,14 @@ namespace LegoPartTracker.API.Controllers
             return Ok(themes);
         }
 
+        [HttpGet("Themes/{id}")]
+        public IActionResult GetTheme(int id)
+        {
+            var theme = _rebrickableInfoRepository.GetTheme(id);
+
+            return Ok(theme);
+        }
+
         [HttpGet("PartCategories")]
         public IActionResult GetPartCategories()
         {
@@ -76,7 +84,7 @@ namespace LegoPartTracker.API.Controllers
                 SetNumber = sourceSet.SetNumber,
                 Name = sourceSet.Name,
                 ThemeId = sourceSet.ThemeId,
-                Theme = CreateThemePath(sourceSet.ThemeId),
+                Theme = GetThemePath(sourceSet.ThemeId),
                 SetImageUrl = sourceSet.SetImageUrl.AbsoluteUri
             };
 
@@ -105,18 +113,16 @@ namespace LegoPartTracker.API.Controllers
             return NoContent();
         }
 
-        private string CreateThemePath(int themeId)
+        private string GetThemePath(int themeId)
         {
-            var themes = _rebrickableInfoRepository.GetAllThemes();
-
-            var theme = themes.Where(t => t.Id == themeId).FirstOrDefault();
-
+            var theme = _rebrickableInfoRepository.GetTheme(themeId);
+            
             string themePath = theme.Name;
             int i = 1;
 
             while(theme.ParentId.HasValue && i<10)
             {
-                theme = themes.Where(t => t.Id == theme.ParentId).FirstOrDefault();
+                theme = _rebrickableInfoRepository.GetTheme(theme.ParentId.Value);
                 themePath = theme.Name + " > " + themePath;
                 i++;
             }
