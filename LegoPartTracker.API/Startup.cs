@@ -28,6 +28,7 @@ namespace LegoPartFinder.API
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddMvc();
 
             var connectionString = Startup.Configuration["connectionStrings:legoPartFinderConnectionString"];
@@ -64,6 +65,8 @@ namespace LegoPartFinder.API
                 config.CreateMap<SetPart, SetPartForUpdateDto>();
                 config.CreateMap<SetPartForUpdateDto, SetPart>();
             });
+
+            app.UseCors(options => options.WithOrigins("http://localhost:4200").AllowAnyMethod());
 
             app.UseMvc();
         }
