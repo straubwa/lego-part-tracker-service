@@ -24,7 +24,6 @@ namespace LegoPartTracker.API.Entities
         [MaxLength(400)]
         public string PartUrl { get; set; }
 
-        [Required]
         [MaxLength(400)]
         public string PartImageUrl { get; set; }
 
