@@ -66,7 +66,7 @@ namespace LegoPartFinder.API
                 config.CreateMap<SetPartForUpdateDto, SetPart>();
             });
 
-            app.UseCors(options => options.WithOrigins("http://localhost:4200").AllowAnyMethod());
+            app.UseCors(options => options.WithOrigins("http://localhost:4200", "http://192.168.99.100:3000").AllowAnyHeader().AllowAnyMethod());
 
             app.UseMvc();
         }

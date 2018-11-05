@@ -37,6 +37,12 @@ namespace LegoPartTracker.API.Entities
         [Range(0, int.MaxValue)]
         public int QuantityFound { get; set; }
 
+        public int QuantityRemaining {
+            get {
+                return QuantityNeeded - QuantityFound;
+            }
+        }
+
         [MaxLength(100)]
         public string ElementId { get; set; }
 
