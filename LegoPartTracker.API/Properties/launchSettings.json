@@ -19,10 +19,11 @@
     "LegoPartFinder.API": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "/api/test/isrunning",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:63234"
+      "applicationUrl": "http://localhost:63234/"
     }
   }
 }
