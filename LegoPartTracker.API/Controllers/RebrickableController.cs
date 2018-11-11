@@ -63,7 +63,7 @@ namespace LegoPartTracker.API.Controllers
             return Ok(partCategories);
         }
         
-        [HttpPost("Sets/{setNumber}/ImportSet")]
+        [HttpPost("Sets/ImportSet/{setNumber}")]
         public IActionResult ImportRebrickableSet(string setNumber)
         {
             //get set from rebrickable
