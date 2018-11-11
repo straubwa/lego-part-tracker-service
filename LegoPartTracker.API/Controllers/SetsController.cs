@@ -134,11 +134,28 @@ namespace LegoPartTracker.API.Controllers
 
             Mapper.Map(setPartToPatch, setPartToReturn);
 
-            if(!_setInfoRepository.Save())
+            if (!_setInfoRepository.Save())
             {
                 _logger.LogError($"Set Number {setNumber} Part {id} patch error when saving");
                 return StatusCode(500, "A problem happened while handling your request");
             }
+            return NoContent();
+        }
+
+
+        [HttpPost("{setNumber}/Parts/ClearFound")]
+        public IActionResult UpdateSetPartClearFound(string setNumber)
+        {
+            if (!_setInfoRepository.SetExists(setNumber))
+            {
+                _logger.LogInformation($"Set Number {setNumber} not found");
+                return NotFound();
+            }
+            _setInfoRepository.ClearFoundPartsFromSet(setNumber);
+            _setInfoRepository.Save();
+
+            _logger.LogInformation($"Set Number {setNumber} found parts cleared out");
+
             return NoContent();
         }
     }
