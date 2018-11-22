@@ -63,7 +63,7 @@ namespace LegoPartTracker.API.Controllers
             return Ok(partCategories);
         }
         
-        [HttpPost("Sets/{setNumber}/ImportSet")]
+        [HttpPost("Sets/ImportSet/{setNumber}")]
         public IActionResult ImportRebrickableSet(string setNumber)
         {
             //get set from rebrickable
@@ -77,8 +77,19 @@ namespace LegoPartTracker.API.Controllers
             var sourceSet = _rebrickableInfoRepository.GetSet(setNumber);
 
             if (sourceSet == null)
-                return NotFound();
-
+            {
+                if (!setNumber.EndsWith("-1"))
+                {
+                    setNumber = setNumber + "-1";
+                    sourceSet = _rebrickableInfoRepository.GetSet(setNumber);
+                }
+                
+                if(sourceSet == null)
+                {
+                    return NotFound();
+                }                
+            }
+            
             var s = new Entities.Set()
             {
                 SetNumber = sourceSet.SetNumber,
