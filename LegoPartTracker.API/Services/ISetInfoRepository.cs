@@ -22,6 +22,8 @@ namespace LegoPartTracker.API.Services
 
         void RemoveSet(string setNumber);
 
+        void ClearFoundPartsFromSet(string setNumber);
+
         bool Save();
     }
 }
