@@ -37,7 +37,7 @@ namespace LegoPartTracker.API.Controllers
         [HttpGet("{setNumber}", Name = "GetSet")]
         public IActionResult GetSet(string setNumber)
         {
-            var setToReturn = _setInfoRepository.GetSet(setNumber);
+            var setToReturn = _setInfoRepository.GetSetDetail(setNumber);
             if (setToReturn == null)
             {
                 _logger.LogInformation($"Set Number {setNumber} not found");

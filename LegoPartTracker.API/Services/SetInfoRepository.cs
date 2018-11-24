@@ -26,6 +26,11 @@ namespace LegoPartTracker.API.Services
             return _context.Sets.Where(s => s.SetNumber == setNumber).FirstOrDefault();
         }
 
+        public SetDetail GetSetDetail(string setNumber)
+        {
+            return _context.SetDetails.Where(s => s.SetNumber == setNumber).FirstOrDefault();
+        }
+
         public SetPart GetSetPart(string setNumber, int partId)
         {
             return _context.Parts.Where(p => p.SetNumber == setNumber && p.Id == partId).FirstOrDefault();

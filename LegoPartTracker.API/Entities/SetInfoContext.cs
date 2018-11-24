@@ -14,7 +14,7 @@ namespace LegoPartTracker.API.Entities
         }
 
         public DbSet<Set> Sets { get; set; }
+        public DbQuery<SetDetail> SetDetails { get; set; }
         public DbSet<SetPart> Parts { get; set; }
-
     }
 }
