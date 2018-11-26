@@ -2,6 +2,7 @@
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,6 +23,9 @@ namespace LegoPartTracker.API.Services
         {
             RestRequest request = new RestRequest($"lego/sets/{ setNumber }", Method.GET);
             var response = _rebrickableClient.Execute<Entities.Rebrickable.Set>(request);
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                return null;
+
             CheckResponse(response);
 
             return response.Data;
@@ -66,9 +70,11 @@ namespace LegoPartTracker.API.Services
 
         private void CheckResponse(IRestResponse response)
         {
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                throw new ApplicationException($"Bad Request: { response.StatusCode }, Content={ response.Content }");
+            var validStatusCodes = new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.NotFound };
+
+            if (!validStatusCodes.Contains(response.StatusCode))
+            {                
+                throw new Exception($"Bad Request: { response.StatusCode }, Content={ response.Content }");
             }
         }
 
