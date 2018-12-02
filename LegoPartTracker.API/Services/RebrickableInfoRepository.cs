@@ -2,6 +2,7 @@
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace LegoPartTracker.API.Services
         public RebrickableInfoRepository(IConfiguration config)
         {
             _rebrickableClient = new RestClient("https://rebrickable.com/api/v3/");
-            _rebrickableClient.AddDefaultHeader("authorization", "key " + config["rebrickable:key"]);
+            _rebrickableClient.AddDefaultParameter(new Parameter("key", config["rebrickable:key"], ParameterType.QueryString));
         }
 
 
@@ -22,9 +23,12 @@ namespace LegoPartTracker.API.Services
         {
             RestRequest request = new RestRequest($"lego/sets/{ setNumber }", Method.GET);
             var response = _rebrickableClient.Execute<Entities.Rebrickable.Set>(request);
-            var set = response.Data;
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                return null;
 
-            return set;
+            CheckResponse(response);
+
+            return response.Data;
         }
 
 
@@ -41,9 +45,9 @@ namespace LegoPartTracker.API.Services
         {
             RestRequest request = new RestRequest($"lego/themes/{ id }", Method.GET);
             var response = _rebrickableClient.Execute<Entities.Rebrickable.Theme>(request);
-            var theme = response.Data;
+            CheckResponse(response);
 
-            return theme;
+            return response.Data;
         }
 
 
@@ -64,12 +68,24 @@ namespace LegoPartTracker.API.Services
             return partCategories;
         }
 
+        private void CheckResponse(IRestResponse response)
+        {
+            var validStatusCodes = new HttpStatusCode[] { HttpStatusCode.OK, HttpStatusCode.NotFound };
+
+            if (!validStatusCodes.Contains(response.StatusCode))
+            {                
+                throw new Exception($"Bad Request: { response.StatusCode }, Content={ response.Content }");
+            }
+        }
+
 
         #region i'm sure these can be genericized, but just don't have the time / effort to do that for just a few needed calls.
 
         private List<Entities.Rebrickable.Theme> GetAllThemesFromRebrickable(ref RestRequest request)
         {
             var response = _rebrickableClient.Execute<Entities.Rebrickable.ThemeResponse>(request);
+            CheckResponse(response);
+
             var responseData = response.Data;
 
             List<Entities.Rebrickable.Theme> listToReturn = new List<Entities.Rebrickable.Theme>();
@@ -81,6 +97,8 @@ namespace LegoPartTracker.API.Services
             {
                 request = new RestRequest(response.Data.Next.AbsoluteUri, Method.GET);
                 response = _rebrickableClient.Execute<Entities.Rebrickable.ThemeResponse>(request);
+                CheckResponse(response);
+
                 listToReturn.AddRange(response.Data.Themes);
                 getMore = (response.Data.Next != null);
             }
@@ -91,6 +109,8 @@ namespace LegoPartTracker.API.Services
         private List<Entities.Rebrickable.SetPart> GetAllSetPartsFromRebrickable(ref RestRequest request)
         {
             var response = _rebrickableClient.Execute<Entities.Rebrickable.SetPartResponse>(request);
+            CheckResponse(response);
+
             var responseData = response.Data;
 
             List<Entities.Rebrickable.SetPart> listToReturn = new List<Entities.Rebrickable.SetPart>();
@@ -102,6 +122,8 @@ namespace LegoPartTracker.API.Services
             {
                 request = new RestRequest(response.Data.Next.AbsoluteUri, Method.GET);
                 response = _rebrickableClient.Execute<Entities.Rebrickable.SetPartResponse>(request);
+                CheckResponse(response);
+
                 listToReturn.AddRange(response.Data.SetParts);
                 getMore = (response.Data.Next != null);
             }
@@ -112,6 +134,8 @@ namespace LegoPartTracker.API.Services
         private List<Entities.Rebrickable.PartCategory> GetAllPartCategoriesFromRebrickable(ref RestRequest request)
         {
             var response = _rebrickableClient.Execute<Entities.Rebrickable.PartCategoryResponse>(request);
+            CheckResponse(response);
+
             var responseData = response.Data;
 
             List<Entities.Rebrickable.PartCategory> listToReturn = new List<Entities.Rebrickable.PartCategory>();
@@ -123,6 +147,8 @@ namespace LegoPartTracker.API.Services
             {
                 request = new RestRequest(response.Data.Next.AbsoluteUri, Method.GET);
                 response = _rebrickableClient.Execute<Entities.Rebrickable.PartCategoryResponse>(request);
+                CheckResponse(response);
+
                 listToReturn.AddRange(response.Data.PartCategories);
                 getMore = (response.Data.Next != null);
             }
