@@ -26,6 +26,8 @@ namespace LegoPartTracker.API.Models
 
         public int QuantityRemaining { get; set; }
 
+        public DateTime? QuantityFoundDateChanged { get; set; }
+
         public string ElementId { get; set; }
     }
 }

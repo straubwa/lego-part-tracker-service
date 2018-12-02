@@ -27,11 +27,21 @@ namespace LegoPartTracker.API.Controllers
         [HttpGet()]
         public IActionResult GetSets()
         {
-            var setEntities = _setInfoRepository.GetSets();
+            var setToReturn = _setInfoRepository.GetSetDetails();
 
-            var results = Mapper.Map<IEnumerable<SetDto>>(setEntities);
+            var results = Mapper.Map<IEnumerable<SetDto>>(setToReturn);
             return Ok(results);
         }
+
+
+        //[HttpGet("Detail")]
+        //public IActionResult GetSetDetails()
+        //{
+        //    var setToReturn = _setInfoRepository.GetSetDetails();
+
+        //    var results = Mapper.Map<IEnumerable<SetDto>>(setToReturn);
+        //    return Ok(setToReturn);
+        //}
 
 
         [HttpGet("{setNumber}", Name = "GetSet")]
@@ -47,7 +57,22 @@ namespace LegoPartTracker.API.Controllers
             var results = Mapper.Map<SetDto>(setToReturn);
             return Ok(setToReturn);
         }
-        
+
+
+        //[HttpGet("{setNumber}/Detail")]
+        //public IActionResult GetSetDetail(string setNumber)
+        //{
+        //    var setToReturn = _setInfoRepository.GetSetDetail(setNumber);
+        //    if (setToReturn == null)
+        //    {
+        //        _logger.LogInformation($"Set Number {setNumber} not found");
+        //        return NotFound();
+        //    }
+
+        //    var results = Mapper.Map<SetDto>(setToReturn);
+        //    return Ok(setToReturn);
+        //}
+
 
         [HttpGet("{setNumber}/Parts")]
         public IActionResult GetSetParts(string setNumber)
@@ -133,6 +158,8 @@ namespace LegoPartTracker.API.Controllers
             }
 
             Mapper.Map(setPartToPatch, setPartToReturn);
+
+            setPartToReturn.QuantityFoundDateChanged = DateTime.Now;
 
             if (!_setInfoRepository.Save())
             {

@@ -37,6 +37,8 @@ namespace LegoPartTracker.API.Entities
         [Range(0, int.MaxValue)]
         public int QuantityFound { get; set; }
 
+        public DateTime? QuantityFoundDateChanged { get; set; }
+
         public int QuantityRemaining {
             get {
                 return QuantityNeeded - QuantityFound;

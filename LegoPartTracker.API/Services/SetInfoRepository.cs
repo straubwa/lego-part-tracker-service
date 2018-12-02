@@ -38,12 +38,17 @@ namespace LegoPartTracker.API.Services
 
         public IQueryable<SetPart> GetSetParts(string setNumber)
         {
-            return _context.Parts.Where(p => p.SetNumber == setNumber).OrderBy(p => p.PartNumber);
+            return _context.Parts.Where(p => p.SetNumber == setNumber).OrderByDescending(p => p.QuantityFoundDateChanged).ThenBy(p => p.Name);
         }
 
         public IQueryable<Set> GetSets()
         {
             return _context.Sets.OrderBy(s => s.SetNumber);
+        }
+
+        public IQueryable<SetDetail> GetSetDetails()
+        {
+            return _context.SetDetails.OrderBy(s => s.SetNumber);
         }
 
         public void AddSet(Set set)
@@ -59,7 +64,7 @@ namespace LegoPartTracker.API.Services
 
         public void ClearFoundPartsFromSet(string setNumber)
         {
-            _context.Database.ExecuteSqlCommand($"update Parts set QuantityFound = 0 where SetNumber = { setNumber }");
+            _context.Database.ExecuteSqlCommand($"update Parts set QuantityFound = 0, QuantityFoundDateChanged = null where SetNumber = { setNumber }");
         }
 
         public bool Save()
