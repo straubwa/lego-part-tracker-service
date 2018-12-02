@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LegoPartTracker.API.Entities
 {
-    [Table("SetDetail")]
+    [Table("SetDetails")]
     public class SetDetail
     {
         [Key]
@@ -16,7 +16,7 @@ namespace LegoPartTracker.API.Entities
         public int ThemeId { get; set; }
         public string Theme { get; set; }
         public string SetImageUrl { get; set; }
-        public int PartsNeeded { get; }
-        public int PartsFound { get; }
+        public int PartsNeeded { get; set; }
+        public int PartsFound { get; set; }
     }
 }

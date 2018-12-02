@@ -17,5 +17,9 @@ namespace LegoPartTracker.API.Models
         public string Theme { get; set; }
 
         public string SetImageUrl { get; set; }
+
+        public int PartsNeeded { get; set; }
+
+        public int PartsFound { get; set; }
     }
 }

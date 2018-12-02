@@ -60,6 +60,7 @@ namespace LegoPartFinder.API
             AutoMapper.Mapper.Initialize(config =>
             {
                 config.CreateMap<Set, SetDto>();
+                config.CreateMap<SetDetail, SetDto>();
                 config.CreateMap<Set, SetWithSetPartDto>();
                 config.CreateMap<SetPart, SetPartDto>();
                 config.CreateMap<SetPart, SetPartForUpdateDto>();
