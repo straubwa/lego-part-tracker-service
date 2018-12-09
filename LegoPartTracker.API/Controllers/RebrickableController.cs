@@ -1,4 +1,6 @@
-﻿using LegoPartTracker.API.Services;
+﻿using AutoMapper;
+using LegoPartTracker.API.Models;
+using LegoPartTracker.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -121,7 +123,10 @@ namespace LegoPartTracker.API.Controllers
             _setInfoRepository.AddSet(s);
             _setInfoRepository.Save();
 
-            return NoContent();
+            var setToReturn = _setInfoRepository.GetSetDetail(setNumber);
+
+            var results = Mapper.Map<SetDto>(setToReturn);
+            return Ok(setToReturn);
         }
 
         private string GetThemePath(int themeId)
