@@ -16,5 +16,14 @@ namespace LegoPartTracker.API.Entities
         public DbSet<Set> Sets { get; set; }
         public DbQuery<SetDetail> SetDetails { get; set; }
         public DbSet<SetPart> Parts { get; set; }
+        public DbQuery<SetPartDetail> PartDetails { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Group> Groups { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>().ToTable("Category");
+            modelBuilder.Entity<Group>().ToTable("Group");
+        }
     }
 }

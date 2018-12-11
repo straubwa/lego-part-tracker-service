@@ -71,5 +71,40 @@ namespace LegoPartTracker.API.Services
         {
             return (_context.SaveChanges() >= 0);
         }
+
+        public IQueryable<SetPartDetail> GetSetPartDetails(string setNumber)
+        {
+            return _context.PartDetails.Where(p => p.SetNumber == setNumber).OrderByDescending(p => p.QuantityFoundDateChanged).ThenBy(p => p.Name);
+        }
+
+        public SetPartDetail GetSetPartDetail(string setNumber, int partId)
+        {
+            return _context.PartDetails.Where(p => p.SetNumber == setNumber && p.Id == partId).FirstOrDefault();
+        }
+
+        public IQueryable<Category> GetCategories()
+        {
+            return _context.Categories.OrderBy(c => c.Name);
+        }
+
+        public Category GetCategory(int id)
+        {
+            return _context.Categories.Where(c => c.Id == id).FirstOrDefault();
+        }
+
+        public IQueryable<Group> GetGroups()
+        {
+            return _context.Groups.OrderBy(c => c.Name);
+        }
+
+        public void AddCategory(Category category)
+        {
+            _context.Categories.Add(category);
+        }
+
+        public void RemoveCategory(Category category)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

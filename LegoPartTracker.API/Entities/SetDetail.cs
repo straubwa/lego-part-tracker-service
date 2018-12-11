@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LegoPartTracker.API.Entities
 {
-    [Table("SetDetails")]
+    [Table("SetDetail")]
     public class SetDetail
     {
         [Key]

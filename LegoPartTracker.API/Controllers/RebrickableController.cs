@@ -62,7 +62,41 @@ namespace LegoPartTracker.API.Controllers
 
             return Ok(partCategories);
         }
-        
+
+        [HttpPost("PartCategories/Sync")]
+        public IActionResult SyncPartCategories()
+        {
+            //get all categories from rebrickable
+            //get all categories from db
+            //iterate through rebrickable list
+            //add-edit db item
+            //iterate through db
+            //remove any that don't exist in rebrickable 
+
+            var sourceCategories = _rebrickableInfoRepository.GetAllPartCategories();
+            var destCategories = _setInfoRepository.GetCategories();
+
+            foreach(var sc in sourceCategories)
+            {
+                if(destCategories.Any(c => c.Id == sc.Id))
+                {
+                    destCategories.First(c => c.Id == sc.Id).Name = sc.Name;
+                }
+                else
+                {
+                    var dc = new Entities.Category()
+                    {
+                        Id = sc.Id,
+                        Name = sc.Name
+                    };
+                    _setInfoRepository.AddCategory(dc);
+                }
+            }
+            _setInfoRepository.Save();
+
+            return NoContent();
+        }
+
         [HttpPost("Sets/ImportSet/{setNumber}")]
         public IActionResult ImportRebrickableSet(string setNumber)
         {
@@ -112,7 +146,8 @@ namespace LegoPartTracker.API.Controllers
                     PartImageUrl = sourceSetPart.Part.PartImgUrl,
                     Color = sourceSetPart.Color.Name,
                     QuantityNeeded = sourceSetPart.Quantity,
-                    ElementId = sourceSetPart.ElementId
+                    ElementId = sourceSetPart.ElementId,
+                    CategoryId = sourceSetPart.Part.PartCatId
                 };
 
                 s.Parts.Add(sp);
