@@ -7,10 +7,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LegoPartTracker.API.Entities
 {
+    [Table("PartGroup")]
     public class PartGroup
     {
         [Key]
-        public string PartName { get; set; }
+        public string PartNumber { get; set; }
         public int GroupId { get; set; }
     }
 }

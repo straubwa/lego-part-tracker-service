@@ -36,6 +36,9 @@ namespace LegoPartTracker.API.Services
 
         void ClearFoundPartsFromSet(string setNumber);
 
+        IQueryable<PartGroupDetail> GetPartGroupDetailsWithoutGroup();
+        IQueryable<PartGroupDetail> GetPartGroupDetailsWithoutGroup(int categoryId);
+
         bool Save();
     }
 }

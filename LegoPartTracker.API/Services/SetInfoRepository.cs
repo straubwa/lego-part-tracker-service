@@ -106,5 +106,15 @@ namespace LegoPartTracker.API.Services
         {
             throw new NotImplementedException();
         }
+
+        public IQueryable<PartGroupDetail> GetPartGroupDetailsWithoutGroup()
+        {
+            return _context.PartGroupDetails.Where(c => !c.GroupId.HasValue);
+        }
+
+        public IQueryable<PartGroupDetail> GetPartGroupDetailsWithoutGroup(int categoryId)
+        {
+            return _context.PartGroupDetails.Where(g => !g.GroupId.HasValue && g.CategoryId == categoryId);
+        }
     }
 }
