@@ -23,16 +23,7 @@ namespace LegoPartTracker.API.Controllers
             _setInfoRepository = setInfoRepository;
         }
 
-        [HttpGet("GroupDetail/NoGroup")]
-        public IActionResult GetPartGroupDetailsWithoutAssignedGroup()
-        {
-            var partsToReturn = _setInfoRepository.GetPartGroupDetailsWithoutGroup();
-
-            return Ok(partsToReturn);
-        }
-
-
-        [HttpGet("GroupDetail/NoGroupCategories")]
+        [HttpGet("PartsWithoutGroup/Categories")]
         public IActionResult GetCategoriessWithoutAssignedGroup()
         {
             var partsWithoutGroup = _setInfoRepository.GetPartGroupDetailsWithoutGroup();
@@ -42,6 +33,22 @@ namespace LegoPartTracker.API.Controllers
                 .Select(g => new { Id = g.Key.CategoryId, Name = g.Key.CategoryName, PartCount = g.Count() });
 
             return Ok(a);
+        }
+
+        [HttpGet("PartsWithoutGroup/{categoryId}")]
+        public IActionResult GetPartsWithoutGroup(int categoryId)
+        {
+            var parts = _setInfoRepository.GetPartGroupDetailsWithoutGroup(categoryId).OrderBy(o => o.Name);
+            return Ok(parts);
+        }
+
+
+        [HttpGet("Groups")]
+        public IActionResult GetGroups()
+        {
+            var groups = _setInfoRepository.GetGroups();
+
+            return Ok(groups);
         }
     }
 }
