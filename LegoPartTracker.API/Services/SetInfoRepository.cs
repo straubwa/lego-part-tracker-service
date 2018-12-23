@@ -51,6 +51,11 @@ namespace LegoPartTracker.API.Services
             return _context.SetDetails.OrderBy(s => s.SetNumber);
         }
 
+        public void AddPartGroup(PartGroup partGroup)
+        {
+            _context.Add(partGroup);
+        }
+
         public void AddSet(Set set)
         {
             _context.Sets.Add(set);

@@ -13,5 +13,6 @@ namespace LegoPartTracker.API.Entities
         [Key]
         public string PartNumber { get; set; }
         public int GroupId { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

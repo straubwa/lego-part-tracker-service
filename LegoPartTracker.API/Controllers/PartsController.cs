@@ -50,5 +50,21 @@ namespace LegoPartTracker.API.Controllers
 
             return Ok(groups);
         }
+
+        [HttpPost("PartGroup")]
+        public IActionResult NewPartGroup([FromBody] PartGroupForCreateDto partGroup)
+        {
+            var pg = new Entities.PartGroup()
+            {
+                PartNumber = partGroup.PartNumber,
+                GroupId = partGroup.GroupId,
+                CreatedDate = DateTime.Now
+            };
+
+            _setInfoRepository.AddPartGroup(pg);
+            _setInfoRepository.Save();
+
+            return Ok(pg);
+        }
     }
 }
