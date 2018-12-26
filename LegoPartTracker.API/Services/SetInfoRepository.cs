@@ -63,13 +63,13 @@ namespace LegoPartTracker.API.Services
 
         public void RemoveSet(string setNumber)
         {
-            _context.Database.ExecuteSqlCommand($"delete Parts where SetNumber = { setNumber }");
-            _context.Database.ExecuteSqlCommand($"delete Sets where SetNumber = { setNumber }");
+            _context.Database.ExecuteSqlCommand($"delete Part where SetNumber = { setNumber }");
+            _context.Database.ExecuteSqlCommand($"delete Set where SetNumber = { setNumber }");
         }
 
         public void ClearFoundPartsFromSet(string setNumber)
         {
-            _context.Database.ExecuteSqlCommand($"update Parts set QuantityFound = 0, QuantityFoundDateChanged = null where SetNumber = { setNumber }");
+            _context.Database.ExecuteSqlCommand($"update Part set QuantityFound = 0, QuantityFoundDateChanged = null where SetNumber = { setNumber }");
         }
 
         public bool Save()
