@@ -58,10 +58,9 @@ namespace LegoPartTracker.API.Controllers
                 return NotFound();
             }
 
-            var setPartsToReturn = _setInfoRepository.GetSetParts(setNumber);
+            var setPartsToReturn = _setInfoRepository.GetSetPartDetails(setNumber);
 
-            var results = Mapper.Map<IEnumerable<SetPartDto>>(setPartsToReturn);
-            return Ok(results);
+            return Ok(setPartsToReturn);
         }
 
 
@@ -74,15 +73,14 @@ namespace LegoPartTracker.API.Controllers
                 return NotFound();
             }
 
-            var setPartToReturn = _setInfoRepository.GetSetPart(setNumber, id);
+            var setPartToReturn = _setInfoRepository.GetSetPartDetail(setNumber, id);
             if (setPartToReturn == null)
             {
                 _logger.LogInformation($"Set Number {setNumber} Part {id} not found");
                 return NotFound();
             }
 
-            var results = Mapper.Map<SetPartDto>(setPartToReturn);
-            return Ok(results);
+            return Ok(setPartToReturn);
         }
 
 

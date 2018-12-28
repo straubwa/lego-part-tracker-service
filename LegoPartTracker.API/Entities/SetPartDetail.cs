@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LegoPartTracker.API.Entities
 {
+    [Table("PartDetail")]
     public class SetPartDetail
     {
         [Key]
@@ -22,6 +23,8 @@ namespace LegoPartTracker.API.Entities
         public DateTime? QuantityFoundDateChanged { get; set; }
         public string ElementId { get; set; }
         public int? CategoryId { get; set; }
+        public string CategoryName { get; set; }
+        public string GroupName { get; set; }
 
         public int QuantityRemaining {
             get {
