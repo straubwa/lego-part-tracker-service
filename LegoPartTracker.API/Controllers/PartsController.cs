@@ -46,7 +46,7 @@ namespace LegoPartTracker.API.Controllers
         [HttpGet("Groups")]
         public IActionResult GetGroups()
         {
-            var groups = _setInfoRepository.GetGroups();
+            var groups = _setInfoRepository.GetGroups().OrderBy(o => o.Name);
 
             return Ok(groups);
         }

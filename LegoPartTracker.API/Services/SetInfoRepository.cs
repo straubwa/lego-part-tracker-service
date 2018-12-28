@@ -79,7 +79,7 @@ namespace LegoPartTracker.API.Services
 
         public IQueryable<SetPartDetail> GetSetPartDetails(string setNumber)
         {
-            return _context.PartDetails.Where(p => p.SetNumber == setNumber).OrderByDescending(p => p.QuantityFoundDateChanged).ThenBy(p => p.Name);
+            return _context.PartDetails.Where(p => p.SetNumber == setNumber).OrderByDescending(p => p.GroupName).ThenBy(p => p.Name);
         }
 
         public SetPartDetail GetSetPartDetail(string setNumber, int partId)
