@@ -14,6 +14,7 @@ namespace LegoPartTracker.API.Entities
         public string PartNumber { get; set; }
         public string Name { get; set; }
         public string PartImageUrl { get; set; }
+        public int PartCount { get; set; }
         public int? CategoryId { get; set; }
         public string CategoryName { get; set; }
         public int? GroupId { get; set; }
