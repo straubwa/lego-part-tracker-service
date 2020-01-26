@@ -117,6 +117,11 @@ namespace LegoPartTracker.API.Services
             return _context.PartGroupDetails.Where(c => !c.GroupId.HasValue);
         }
 
+        public IQueryable<PartGroupDetail> GetPartGroupDetailsByGroup(int groupId)
+        {
+            return _context.PartGroupDetails.Where(c => c.GroupId == groupId);
+        }
+
         public IQueryable<PartGroupDetail> GetPartGroupDetailsWithoutGroup(int categoryId)
         {
             return _context.PartGroupDetails.Where(g => !g.GroupId.HasValue && g.CategoryId == categoryId);

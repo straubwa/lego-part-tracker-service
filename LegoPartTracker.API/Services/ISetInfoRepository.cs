@@ -40,6 +40,7 @@ namespace LegoPartTracker.API.Services
 
         IQueryable<PartGroupDetail> GetPartGroupDetailsWithoutGroup();
         IQueryable<PartGroupDetail> GetPartGroupDetailsWithoutGroup(int categoryId);
+        IQueryable<PartGroupDetail> GetPartGroupDetailsByGroup(int groupId);
 
         bool Save();
     }

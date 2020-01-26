@@ -24,7 +24,7 @@ namespace LegoPartTracker.API.Controllers
         }
 
         [HttpGet("PartsWithoutGroup/Categories")]
-        public IActionResult GetCategoriessWithoutAssignedGroup()
+        public IActionResult GetCategoriesWithoutAssignedGroup()
         {
             var partsWithoutGroup = _setInfoRepository.GetPartGroupDetailsWithoutGroup();
 
@@ -39,6 +39,14 @@ namespace LegoPartTracker.API.Controllers
         public IActionResult GetPartsWithoutGroup(int categoryId)
         {
             var parts = _setInfoRepository.GetPartGroupDetailsWithoutGroup(categoryId).OrderBy(o => o.Name);
+            return Ok(parts);
+        }
+        
+        [HttpGet("Groups/{groupId}/Parts")]
+        public IActionResult GetPartsByGroup(int groupId)
+        {
+            var parts = _setInfoRepository.GetPartGroupDetailsByGroup(groupId);
+            
             return Ok(parts);
         }
 
