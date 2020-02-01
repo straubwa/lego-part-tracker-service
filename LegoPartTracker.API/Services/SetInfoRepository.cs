@@ -56,6 +56,11 @@ namespace LegoPartTracker.API.Services
             _context.Add(partGroup);
         }
 
+        public void AddSubgroup(Subgroup subgroup)
+        {
+            _context.Add(subgroup);
+        }
+
         public void AddSet(Set set)
         {
             _context.Sets.Add(set);

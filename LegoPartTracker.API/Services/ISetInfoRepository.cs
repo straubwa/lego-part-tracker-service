@@ -33,6 +33,8 @@ namespace LegoPartTracker.API.Services
 
         void AddPartGroup(PartGroup partGroup);
 
+        void AddSubgroup(Subgroup subgroup);
+
         void AddSet(Set set);
         void RemoveSet(string setNumber);
 

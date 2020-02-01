@@ -41,23 +41,6 @@ namespace LegoPartTracker.API.Controllers
             var parts = _setInfoRepository.GetPartGroupDetailsWithoutGroup(categoryId).OrderBy(o => o.Name);
             return Ok(parts);
         }
-        
-        [HttpGet("Groups/{groupId}/Parts")]
-        public IActionResult GetPartsByGroup(int groupId)
-        {
-            var parts = _setInfoRepository.GetPartGroupDetailsByGroup(groupId);
-            
-            return Ok(parts);
-        }
-
-
-        [HttpGet("Groups")]
-        public IActionResult GetGroups()
-        {
-            var groups = _setInfoRepository.GetGroups().OrderBy(o => o.Name);
-
-            return Ok(groups);
-        }
 
         [HttpPost("PartGroup")]
         public IActionResult NewPartGroup([FromBody] PartGroupForCreateDto partGroup)
@@ -73,6 +56,40 @@ namespace LegoPartTracker.API.Controllers
             _setInfoRepository.Save();
 
             return Ok(pg);
+        }
+
+
+        [HttpGet("Groups")]
+        public IActionResult GetGroups()
+        {
+            var groups = _setInfoRepository.GetGroups().OrderBy(o => o.Name);
+
+            return Ok(groups);
+        }
+        
+        [HttpGet("Groups/{groupId}/Parts")]
+        public IActionResult GetPartsByGroup(int groupId)
+        {
+            var parts = _setInfoRepository.GetPartGroupDetailsByGroup(groupId).OrderBy(o => o.Name);
+            
+            return Ok(parts);
+        }
+
+        [HttpPost("Groups/{groupId}/Subgroups")]
+        public IActionResult NewSubgroup(int groupId, [FromBody] SubgroupForCreateDto subGroup)
+        {
+            var sg = new Entities.Subgroup()
+            {
+                Name = subGroup.Name,
+                GroupId = groupId,
+                IconUrl = subGroup.IconUrl,
+                CreatedDate = DateTime.Now
+            };
+
+            _setInfoRepository.AddSubgroup(sg);
+            _setInfoRepository.Save();
+
+            return Ok(sg);
         }
     }
 }
