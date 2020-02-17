@@ -35,6 +35,11 @@ namespace LegoPartTracker.API.Services
 
         void AddSubgroup(Subgroup subgroup);
 
+        void AddPartSubgroup(PartSubgroup partSubgroup);
+        void RemovePartSubgroup(PartSubgroup partSubgroup);
+
+        IQueryable<Subgroup> GetSubgroups(int groupId);
+
         void AddSet(Set set);
         void RemoveSet(string setNumber);
 
@@ -43,6 +48,7 @@ namespace LegoPartTracker.API.Services
         IQueryable<PartGroupDetail> GetPartGroupDetailsWithoutGroup();
         IQueryable<PartGroupDetail> GetPartGroupDetailsWithoutGroup(int categoryId);
         IQueryable<PartGroupDetail> GetPartGroupDetailsByGroup(int groupId);
+        IQueryable<PartGroupDetail> GetPartGroupDetailsBySubgroup(int subgroupId);
 
         bool Save();
     }

@@ -19,7 +19,8 @@ namespace LegoPartTracker.API.Entities
         public DbQuery<SetPartDetail> PartDetails { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Group> Groups { get; set; }
-        public DbSet<Subgroup> Subgroups { get; set; }
+        public DbSet<Subgroup> Subgroup { get; set; }
+        public DbSet<PartSubgroup> PartSubgroup { get; set; }
         public DbSet<PartGroup> PartGroups { get; set; }
         public DbQuery<PartGroupDetail> PartGroupDetails { get; set; }
         

@@ -66,6 +66,16 @@ namespace LegoPartTracker.API.Services
             _context.Sets.Add(set);
         }
 
+        public void AddPartSubgroup(PartSubgroup partSubgroup)
+        {
+            _context.Add(partSubgroup);
+        }
+
+        public void RemovePartSubgroup(PartSubgroup partSubgroup)
+        {
+            _context.Remove(partSubgroup);
+        }
+
         public void RemoveSet(string setNumber)
         {
             _context.Database.ExecuteSqlCommand($"delete Part where SetNumber = { setNumber }");
@@ -107,6 +117,11 @@ namespace LegoPartTracker.API.Services
             return _context.Groups.OrderBy(c => c.Name);
         }
 
+        public IQueryable<Subgroup> GetSubgroups(int groupId)
+        {
+            return _context.Subgroup.Where(s => s.GroupId == groupId).OrderBy(s => s.Name);
+        }
+
         public void AddCategory(Category category)
         {
             _context.Categories.Add(category);
@@ -125,6 +140,11 @@ namespace LegoPartTracker.API.Services
         public IQueryable<PartGroupDetail> GetPartGroupDetailsByGroup(int groupId)
         {
             return _context.PartGroupDetails.Where(c => c.GroupId == groupId);
+        }
+
+        public IQueryable<PartGroupDetail> GetPartGroupDetailsBySubgroup(int subgroupId)
+        {
+            return _context.PartGroupDetails.Where(c => c.SubgroupId == subgroupId);
         }
 
         public IQueryable<PartGroupDetail> GetPartGroupDetailsWithoutGroup(int categoryId)

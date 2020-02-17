@@ -99,6 +99,7 @@ namespace LegoPartTracker.API.Controllers
                 Name = subGroup.Name,
                 GroupId = groupId,
                 IconUrl = subGroup.IconUrl,
+                IconFileName = subGroup.IconFileName,
                 CreatedDate = DateTime.Now
             };
 
@@ -106,6 +107,50 @@ namespace LegoPartTracker.API.Controllers
             _setInfoRepository.Save();
 
             return Ok(sg);
+        }
+
+        [HttpGet("Groups/{groupId}/Subgroups")]
+        public IActionResult GetSubgroups(int groupId)
+        {
+            var sg = _setInfoRepository.GetSubgroups(groupId);
+
+            return Ok(sg);
+        }
+
+        [HttpGet("Groups/{groupId}/Subgroups/{subgroupId}/Parts")]
+        public IActionResult GetPartsBySubgroup(int groupId, int subgroupId)
+        {
+            var parts = _setInfoRepository.GetPartGroupDetailsBySubgroup(subgroupId).OrderBy(o => o.Name);
+
+            return Ok(parts);
+        }
+
+        [HttpPost("Groups/{groupId}/Subgroups/{subgroupId}/Parts")]
+        public IActionResult NewPartSubgroup(int groupId, int subgroupId, [FromBody] PartNumberDto part)
+        {
+            var psg = new Entities.PartSubgroup()
+            {
+                PartNumber = part.PartNumber,
+                SubgroupId = subgroupId,
+                CreatedDate = DateTime.Now
+            };
+            _setInfoRepository.AddPartSubgroup(psg);
+            _setInfoRepository.Save();
+            return Ok(psg);
+        }
+
+        [HttpDelete("Groups/{groupId}/Subgroups/{subgroupId}/Parts")]
+        public IActionResult RemovePartSubgroup(int groupId, int subgroupId, [FromBody] PartNumberDto part)
+        {
+            var psg = new Entities.PartSubgroup()
+            {
+                PartNumber = part.PartNumber,
+                SubgroupId = subgroupId
+            };
+
+            _setInfoRepository.RemovePartSubgroup(psg);
+            _setInfoRepository.Save();
+            return Ok();
         }
     }
 }
