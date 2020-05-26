@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace LegoPartTracker.API.Controllers
 {
     [Route("api/Rebrickable")]
-    public class RebrickableController : Controller
+    public class RebrickableController : ControllerBase
     {
         private ILogger<SetsController> _logger;
         private ISetInfoRepository _setInfoRepository;

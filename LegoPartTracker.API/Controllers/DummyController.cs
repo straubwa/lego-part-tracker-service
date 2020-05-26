@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LegoPartTracker.API.Controllers
 {
-    public class DummyController : Controller
+    public class DummyController : ControllerBase
     {
         private SetInfoContext _context;
 

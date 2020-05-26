@@ -11,13 +11,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace LegoPartFinder.API
 {
     public class Startup
     {
-        public static IConfiguration Configuration { get; private set; }
+        public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
@@ -28,24 +29,22 @@ namespace LegoPartFinder.API
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
-            services.AddMvc();
+            //services.AddCors();
 
-            var connectionString = Startup.Configuration["connectionStrings:legoPartFinderConnectionString"];
+            services.AddMvc().AddNewtonsoftJson();
+
+            services.AddControllers();
+
+            var connectionString = Configuration["connectionStrings:legoPartFinderConnectionString"];
             services.AddDbContext<SetInfoContext>(o => o.UseSqlServer(connectionString));
-
-            services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddScoped<ISetInfoRepository, SetInfoRepository>();
             services.AddScoped<IRebrickableInfoRepository, RebrickableInfoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            loggerFactory.AddConsole();
-            loggerFactory.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -55,7 +54,11 @@ namespace LegoPartFinder.API
                 app.UseExceptionHandler();
             }
 
-            app.UseStatusCodePages();
+            //app.UseStatusCodePages();
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
 
             AutoMapper.Mapper.Initialize(config =>
             {
@@ -69,7 +72,10 @@ namespace LegoPartFinder.API
 
             app.UseCors(options => options.WithOrigins("http://localhost:4200", "http://192.168.99.100:3000").AllowAnyHeader().AllowAnyMethod());
 
-            app.UseMvc();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

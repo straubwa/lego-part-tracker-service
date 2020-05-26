@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace LegoPartTracker.API.Controllers
 {
     [Route("api/sets")]
-    public class SetsController: Controller
+    public class SetsController: ControllerBase
     {
         private ILogger<SetsController> _logger;
         private ISetInfoRepository _setInfoRepository;
@@ -103,7 +103,10 @@ namespace LegoPartTracker.API.Controllers
         public IActionResult UpdateSetPart(string setNumber, int id, [FromBody] JsonPatchDocument<SetPartForUpdateDto> patchDocument)
         {
             if (patchDocument == null)
+            {
+                _logger.LogInformation("No content to update");
                 return BadRequest();
+            }
 
             if (!_setInfoRepository.SetExists(setNumber))
             {
@@ -139,6 +142,8 @@ namespace LegoPartTracker.API.Controllers
                 _logger.LogError($"Set Number {setNumber} Part {id} patch error when saving");
                 return StatusCode(500, "A problem happened while handling your request");
             }
+
+            _logger.LogInformation("Set Number {setNumber} Part {id} quantity updated", setNumber, id);
             return NoContent();
         }
 

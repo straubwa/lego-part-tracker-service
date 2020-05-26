@@ -1,19 +1,15 @@
-﻿using AutoMapper;
-using LegoPartTracker.API.Models;
+﻿using LegoPartTracker.API.Models;
 using LegoPartTracker.API.Services;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace LegoPartTracker.API.Controllers
 {
     [Route("api/parts")]
-    public class PartsController : Controller
+    public class PartsController : ControllerBase
     {
         private ILogger<SetsController> _logger;
         private ISetInfoRepository _setInfoRepository;
@@ -31,12 +27,6 @@ namespace LegoPartTracker.API.Controllers
         {
             //doing this to hide the upload api key
             return Ok("{\"url\":\"https://api.imgbb.com/1/upload?key=" + _config["imgbb:key"] + "\"}");
-        }
-
-        public PartsController(ILogger<SetsController> logger, ISetInfoRepository setInfoRepository)
-        {
-            _logger = logger;
-            _setInfoRepository = setInfoRepository;
         }
 
         [HttpGet("PartsWithoutGroup/Categories")]
